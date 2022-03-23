@@ -11,7 +11,7 @@ namespace Demo_Responsitory.Sevices.Interface;
 public interface IClassService
 {
     IEnumerable<ClassShow> GetCollection();
-    Task GetbyNameClassAsync(ClassCreate @class);
+    Task<ClassShow> GetbyNameClassAsync(string Studentclass);
     Task CreateAsync(ClassCreate @class);
     Task UpdateAsync(ClassCreate @class);
     Task DeleteAsync(Guid @classId);

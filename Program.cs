@@ -1,6 +1,8 @@
 using Demo_Responsitory;
 using Demo_Responsitory.Repositories.Implements;
 using Demo_Responsitory.Repositories.Interface;
+using Demo_Responsitory.Sevices.Implement;
+using Demo_Responsitory.Sevices.Interface;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -18,6 +20,8 @@ builder.Services.AddDbContext<AppilicationDbContext>(options =>
 });
 builder.Services.AddScoped<IClassRepository, ClassRepository>();
 builder.Services.AddScoped<IStudentRepository, StudentRespository>();
+builder.Services.AddScoped<IClassService, ClassService>();
+builder.Services.AddScoped<IStudentService, StudentService>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

@@ -4,6 +4,7 @@ using Demo_Responsitory;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Demo_Responsitory.Migrations
 {
     [DbContext(typeof(AppilicationDbContext))]
-    partial class AppilicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220323021347_kieu")]
+    partial class kieu
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

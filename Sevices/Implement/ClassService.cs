@@ -20,7 +20,8 @@ public class ClassService : IClassService
 
     public ClassService(IClassRepository classRepository)
     {
-        _classRepository = classRepository;
+        _classRepository = classRepository ?? throw new ArgumentNullException(nameof(classRepository));
+        //Khởi tạo một phiên bản mới của lớp System.ArgumentNullException với tên của tham số gây ra ngoại lệ này.
     }
 
     public IEnumerable<ClassShow> GetCollection()
@@ -32,49 +33,65 @@ public class ClassService : IClassService
         });
     }
 
-    public async Task<ClassShow> GetbyNameClassAsync(string @classname)
+
+
+    public async Task<ClassShow> GetbyNameClassAsync(string classname)
     {
         var result = _classRepository.GetAll()
-            .FirstOrDefaultAsync(entity => Equals(@classname, entity.Name));
+            .FirstOrDefaultAsync(entity => string.Equals(classname, entity.Name));
+
         return new ClassShow()
         {
             NameClass = @classname,
             Classroom = result?.Result.Classroom
         };
+
     }
 
-    public async Task CreateAsync(ClassCreate @class)
+    public async Task CreateAsync(ClassCreate classNew)
     {
-        var classInput = new Class()
+        if (_classRepository.GetAll().Any(c => Guid.Equals(classNew.Id,c.Id)) == false)
         {
-            Name = @class.NameClass,
-            Classroom = @class.Classroom,
-
-        };
-        await _classRepository.AddAsync(classInput);
+            var classInput = new Class()
+            {
+                Name = classNew.NameClass,
+                Classroom = classNew.Classroom,
+            };
+            await _classRepository.AddAsync(classInput);
+        }
+        else
+        {
+            throw new ArgumentNullException("Lớp này đã tồn tại");
+        }
     }
 
     public async Task UpdateAsync(ClassCreate @class)
     {
-        var classtemp = _classRepository.GetAll().FirstOrDefaultAsync(entity => Equals(@class.Id, entity.Id));
-        var classInput = new Class()
+        if (_classRepository.GetAll().Any(c => c.Equals(@class.Id)))
         {
-            Id = classtemp.Result.Id,
-            Name = classtemp.Result.Name,
-            Classroom = classtemp.Result.Classroom
-        };
-        await _classRepository.Update(classInput);
+            var classtemp = _classRepository.GetAll().FirstOrDefaultAsync(entity => Equals(@class.Id, entity.Id))
+                .Result;
+            classtemp.Name = @class.NameClass;
+            classtemp.Classroom = @class.Classroom;
+            await _classRepository.Update(classtemp);
+        }
+        else
+        {
+            throw new ArgumentNullException("Không có dữ liệu này");
+        }
     }
 
     public async Task DeleteAsync(Guid @classId)
     {
-        var classtemp = _classRepository.GetAll().FirstOrDefaultAsync(entity => Equals(@classId, entity.Id));
-        var classInput = new Class()
+        if (_classRepository.GetAll().Any(c => c.Equals(@classId)))
         {
-            Id = classtemp.Result.Id,
-            Name = classtemp?.Result.Name,
-            Classroom = classtemp?.Result.Classroom
-        };
-        await _classRepository.Delete(classInput);
+            var classTemp = _classRepository.GetAll().FirstOrDefaultAsync(entity => Equals(@classId, entity.Id)).Result;
+
+            await _classRepository.Delete(classTemp);
+        }
+        else
+        {
+            throw new ArgumentNullException("không có dữ liệu");
+        }
     }
 }

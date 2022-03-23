@@ -22,6 +22,7 @@ public class StudentRespository:IStudentRepository
     public async Task AddAsync(Student student)
     {
         await _context.Students.AddAsync(student);
+        await _context.SaveChangesAsync();
     }
 
     public async Task Update(Student student)

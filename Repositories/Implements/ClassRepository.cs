@@ -12,7 +12,7 @@ public class ClassRepository : IClassRepository
 
     public ClassRepository(AppilicationDbContext context)
     {
-        _context = context ?? throw new ArgumentNullException();
+        _context = context ?? throw new ArgumentNullException(nameof(context)); 
     }
 
     public IQueryable<Class> GetAll()
@@ -23,6 +23,7 @@ public class ClassRepository : IClassRepository
     public async Task AddAsync(Class @class)
     {
         await _context.Classes.AddAsync(@class);
+        await _context.SaveChangesAsync();
     }
 
     public async Task Update(Class @class)
