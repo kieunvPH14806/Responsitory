@@ -63,18 +63,30 @@ public class ClassService : IClassService
         }
     }
 
-    public async Task UpdateAsyncNameClass(ClassUpdateViewModels classNew)
-    {
-        if (_classRepository.GetAll().Any(c => c.Equals(classNew.Id)))
+    public async Task UpdateAsyncNameClass(ClassUpdateViewModels classNameNew)
+    {//Update NameClass
+        if (_classRepository.GetAll().Any(c => c.Equals(classNameNew.Id)))
         {
-            var classtemp = _classRepository.GetAll().FirstOrDefaultAsync(entity => Equals(classNew.NameClass, entity.NameClass))
-                .Result;
-            classtemp = _mapper.Map<Class>(classNew);
+            var classtemp = _classRepository.GetAll().FirstOrDefault(entity => Equals(classNameNew.NameClass, entity.NameClass))
+                ;
+            classtemp = _mapper.Map<Class>(classNameNew);
             await _classRepository.Update(classtemp);
         }
         else
         {
             throw new ArgumentNullException("Không có dữ liệu này");
+        }
+    }
+
+    public async Task UpdateAsyncClassroom(ClassUpdateViewModels classroomNew)
+    {//Update ClassRoom
+        if (_classRepository.GetAll().Any(c=>c.Equals(classroomNew.NameClass)))
+        {
+            var classtemp = _classRepository.GetAll()
+                .FirstOrDefault(entity => Equals(classroomNew.NameClass, entity.NameClass));
+            classtemp = _mapper.Map<Class>(classtemp);
+            await _classRepository.Update(classtemp);
+
         }
     }
 

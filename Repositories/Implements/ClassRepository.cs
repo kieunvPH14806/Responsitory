@@ -8,7 +8,7 @@ namespace Demo_Responsitory.Repositories.Implements;
 
 public class ClassRepository : IClassRepository
 {
-    readonly AppilicationDbContext _context;
+    private readonly AppilicationDbContext _context;
 
     public ClassRepository(AppilicationDbContext context)
     {
