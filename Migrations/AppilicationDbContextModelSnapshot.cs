@@ -46,7 +46,7 @@ namespace Demo_Responsitory.Migrations
                     b.Property<string>("Classroom")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("NameClass")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

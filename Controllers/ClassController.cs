@@ -7,6 +7,7 @@ using Demo_Responsitory.ViewsModels.ModelsCreate;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Demo_Responsitory.ViewsModels;
 
 namespace Demo_Responsitory.Controllers
 {
@@ -34,14 +35,15 @@ namespace Demo_Responsitory.Controllers
           
         }
         [HttpPost]
-        public async Task Create(ClassCreate @class)
+        public async Task Create( [FromBody] PostClassViewModels classInput)
         {
-           await _service.CreateAsync(@class);
+            
+           await _service.CreateAsync(classInput);
         }
         [HttpPut("{id}")]
-        public async Task Edit(ClassCreate @class)
+        public async Task Edit([FromBody] ClassUpdateViewModels @class)
         {
-            await _service.UpdateAsync(@class);      
+            await _service.UpdateAsyncNameClass(@class);      
         }
         [HttpDelete("{id}")]
         public async Task Delete(Guid id)

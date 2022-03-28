@@ -12,8 +12,8 @@ public interface IClassService
 {
     IEnumerable<ClassShow> GetCollection();
     Task<ClassShow> GetbyNameClassAsync(string Studentclass);
-    Task CreateAsync(ClassCreate @class);
-    Task UpdateAsync(ClassCreate @class);
+    Task CreateAsync(PostClassViewModels @class);
+    Task UpdateAsyncNameClass(ClassUpdateViewModels @class);
     Task DeleteAsync(Guid @classId);
     
     

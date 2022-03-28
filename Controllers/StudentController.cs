@@ -32,13 +32,13 @@ namespace Demo_Responsitory.Controllers
             return _studentService.GetbyStudentNameAsync(name);
         }
         [HttpPost]
-        public async Task Create(StudentCreate studentCreate)
+        public async Task Create(PostStudentViewModels studentCreate)
         {
             await _studentService.CreateAsync(studentCreate);
         }
 
         [HttpPut("{id}")]
-        public async Task Edit(StudentCreate studentEdit)
+        public async Task Edit(PostStudentViewModels studentEdit)
         {
             await _studentService.UpdateAsync(studentEdit);
         }

@@ -11,8 +11,8 @@ public interface IStudentService
 {
     IEnumerable<StudentShow> GetCollection();
     IQueryable<StudentShow> GetbyStudentNameAsync(string nameStudent);
-    Task CreateAsync(StudentCreate student);
-    Task UpdateAsync(StudentCreate student);
+    Task CreateAsync(PostStudentViewModels student);
+    Task UpdateAsync(PostStudentViewModels student);
     Task DeleteAsync(Guid studentId);
 
 }

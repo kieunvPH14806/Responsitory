@@ -32,7 +32,7 @@ public class StudentService : IStudentService
         {
             Name = entity.Name,
             Birth = entity.Birth,
-            NameClass = entity.Classes.Select(c => c.Name).ToList(),
+            NameClass = entity.Classes.Select(c => c.NameClass).ToList(),
             Classroom = entity.Classes.Select(c => c.Classroom).ToList()
         });
     }
@@ -47,7 +47,7 @@ public class StudentService : IStudentService
             {
                 Name = c.Name,
                 Birth = c.Birth,
-                NameClass = c.Classes.Select(c=>c.Name).ToList(),
+                NameClass = c.Classes.Select(c=>c.NameClass).ToList(),
                 Classroom = c.Classes.Select(c=>c.Classroom).ToList()
 
             });
@@ -66,10 +66,10 @@ public class StudentService : IStudentService
 
     }
 
-    public async Task CreateAsync(StudentCreate student)
+    public async Task CreateAsync(PostStudentViewModels student)
     {
         var inputStudent = new Student();
-        if (_classRepository.GetAll().Any(entity => string.Equals(student.NameClass, entity.Name)))
+        if (_classRepository.GetAll().Any(entity => string.Equals(student.Name, entity.NameClass)))
         {
             inputStudent = new Student()
             {
@@ -78,7 +78,7 @@ public class StudentService : IStudentService
                 Birth = student.Birth,
                 Classes = new Collection<Class>()
                 {
-                    _classRepository.GetAll().FirstOrDefault(c=> string.Equals(student.NameClass,c.Name))
+                    _classRepository.GetAll().FirstOrDefault(c=> string.Equals(student.NameClass,c.NameClass))
 
                 }
             };
@@ -96,7 +96,7 @@ public class StudentService : IStudentService
                     new Class()
                     {
                         Id = Guid.NewGuid(),
-                        Name = student.NameClass,
+                        NameClass = student.NameClass,
                         Classroom = student.Classroom
                     }
 
@@ -108,13 +108,13 @@ public class StudentService : IStudentService
 
     }
 
-    public async Task UpdateAsync(StudentCreate student)
+    public async Task UpdateAsync(PostStudentViewModels student)
     {
 
-        var inputStudent = _studentRepository.GetAll().FirstOrDefaultAsync(c => c.Id == student.Id).Result;
+        var inputStudent = _studentRepository.GetAll().FirstOrDefaultAsync(c => c.Name == student.Name).Result;
 
-        var classEdit = _classRepository.GetAll().FirstOrDefault(c => string.Equals(student.NameClass, c.Name));
-        classEdit.Name = student.NameClass;
+        var classEdit = _classRepository.GetAll().FirstOrDefault(c => string.Equals(student.NameClass, c.NameClass));
+        classEdit.NameClass = student.NameClass;
         classEdit.Classroom = student.Classroom;
         Collection<Class> classesTemp = new Collection<Class>();
         classesTemp.Add(classEdit);

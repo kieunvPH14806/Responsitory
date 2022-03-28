@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Demo_Responsitory.Migrations
 {
     [DbContext(typeof(AppilicationDbContext))]
-    [Migration("20220323021347_kieu")]
-    partial class kieu
+    [Migration("20220328095350_InitializedDbContext")]
+    partial class InitializedDbContext
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -48,7 +48,7 @@ namespace Demo_Responsitory.Migrations
                     b.Property<string>("Classroom")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("NameClass")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

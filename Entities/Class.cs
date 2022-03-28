@@ -10,7 +10,7 @@ namespace Demo_Responsitory.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
-        public string Name { get; set; }
+        public string NameClass { get; set; }
         public string Classroom { get; set; }
         public virtual ICollection<Student> Students { get; set; }
     }

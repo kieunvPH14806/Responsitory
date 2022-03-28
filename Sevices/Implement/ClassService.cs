@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+using AutoMapper;
 using Demo_Responsitory.Entities;
+using Demo_Responsitory.Mapping;
 using Demo_Responsitory.Repositories.Interface;
 using Demo_Responsitory.Sevices.Interface;
 using Demo_Responsitory.ViewsModels;
@@ -16,19 +17,21 @@ namespace Demo_Responsitory.Sevices.Implement;
 
 public class ClassService : IClassService
 {
-    readonly IClassRepository _classRepository;
+    private readonly IClassRepository _classRepository;
+    private readonly IMapper _mapper;
 
-    public ClassService(IClassRepository classRepository)
+    public ClassService(IClassRepository classRepository, IMapper mapper)
     {
         _classRepository = classRepository ?? throw new ArgumentNullException(nameof(classRepository));
         //Khởi tạo một phiên bản mới của lớp System.ArgumentNullException với tên của tham số gây ra ngoại lệ này.
+        _mapper=mapper ?? throw new ArgumentNullException(nameof(mapper));
     }
 
     public IEnumerable<ClassShow> GetCollection()
     {
         return _classRepository.GetAll().Select(entity => new ClassShow()
         {
-            NameClass = entity.Name,
+            NameClass = entity.NameClass,
             Classroom = entity.Classroom,
         });
     }
@@ -38,25 +41,20 @@ public class ClassService : IClassService
     public async Task<ClassShow> GetbyNameClassAsync(string classname)
     {
         var result = _classRepository.GetAll()
-            .FirstOrDefaultAsync(entity => string.Equals(classname, entity.Name));
-
+            .FirstOrDefaultAsync(entity => string.Equals(classname, entity.NameClass));
         return new ClassShow()
         {
-            NameClass = @classname,
-            Classroom = result?.Result.Classroom
+            NameClass = result.Result.NameClass,
+            Classroom = result.Result?.Classroom
         };
 
     }
 
-    public async Task CreateAsync(ClassCreate classNew)
+    public async Task CreateAsync(PostClassViewModels classNew)
     {
-        if (_classRepository.GetAll().Any(c => Guid.Equals(classNew.Id,c.Id)) == false)
+        if (_classRepository.GetAll().Any(c => string.Equals(classNew.NameClass, c.NameClass)) == false)
         {
-            var classInput = new Class()
-            {
-                Name = classNew.NameClass,
-                Classroom = classNew.Classroom,
-            };
+            var classInput = _mapper.Map<Class>(classNew);
             await _classRepository.AddAsync(classInput);
         }
         else
@@ -65,14 +63,13 @@ public class ClassService : IClassService
         }
     }
 
-    public async Task UpdateAsync(ClassCreate @class)
+    public async Task UpdateAsyncNameClass(ClassUpdateViewModels classNew)
     {
-        if (_classRepository.GetAll().Any(c => c.Equals(@class.Id)))
+        if (_classRepository.GetAll().Any(c => c.Equals(classNew.Id)))
         {
-            var classtemp = _classRepository.GetAll().FirstOrDefaultAsync(entity => Equals(@class.Id, entity.Id))
+            var classtemp = _classRepository.GetAll().FirstOrDefaultAsync(entity => Equals(classNew.NameClass, entity.NameClass))
                 .Result;
-            classtemp.Name = @class.NameClass;
-            classtemp.Classroom = @class.Classroom;
+            classtemp = _mapper.Map<Class>(classNew);
             await _classRepository.Update(classtemp);
         }
         else

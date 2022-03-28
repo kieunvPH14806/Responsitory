@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Demo_Responsitory.Migrations
 {
-    public partial class Appilicatiion1 : Migration
+    public partial class InitializedDbContext : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,8 +14,8 @@ namespace Demo_Responsitory.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Classroom = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    NameClass = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Classroom = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -27,9 +27,8 @@ namespace Demo_Responsitory.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ClassId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Birth = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Birth = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -41,11 +40,11 @@ namespace Demo_Responsitory.Migrations
                 columns: table => new
                 {
                     ClassesId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    StudentsesId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    StudentsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ClassStudent", x => new { x.ClassesId, x.StudentsesId });
+                    table.PrimaryKey("PK_ClassStudent", x => new { x.ClassesId, x.StudentsId });
                     table.ForeignKey(
                         name: "FK_ClassStudent_CLASS_ClassesId",
                         column: x => x.ClassesId,
@@ -53,17 +52,17 @@ namespace Demo_Responsitory.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ClassStudent_STUDENT_StudentsesId",
-                        column: x => x.StudentsesId,
+                        name: "FK_ClassStudent_STUDENT_StudentsId",
+                        column: x => x.StudentsId,
                         principalTable: "STUDENT",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClassStudent_StudentsesId",
+                name: "IX_ClassStudent_StudentsId",
                 table: "ClassStudent",
-                column: "StudentsesId");
+                column: "StudentsId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
